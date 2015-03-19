@@ -1,0 +1,5 @@
+ mag_low_x=-1404 mag_high_x=-613 x_off=-1008
+ mag_low_y=385 mag_high_y=1307 y_off=846
+ mag_low_z=5 mag_high_z=926 z_off=465
+
+  mag_x_scale=12.64E-4 mag_y_scale=10.85E-4 mag_z_scale=10.86E-4

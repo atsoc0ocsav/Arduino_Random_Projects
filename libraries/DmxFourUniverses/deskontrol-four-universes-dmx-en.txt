@@ -1,0 +1,96 @@
+Instructions for library setup - version 0.3:
+
+
+
+Copy deskontrol library folder "Dmx" to arduino-XX.XX/libraries/
+
+Instructions for library use:
+
+
+There are four objects already created called "ArduinoDmx0", "ArduinoDmx1", "ArduinoDmx2", "ArduinoDmx3", each of these objects using a USART of the Arduino Mega, with Arduino nano can only use "ArduinoDmx0" because there is only one USART.
+
+
+When compiling your programs, in order to economy Arduino resources, should comment in the "lib_dmx.h" lines with "# define USE_UARTN" of USARTs not going to use (only Arduino Mega).
+
+
+
+The library usage is very easy, the functions that you have to use are:
+
+
+- ArduinoDmxN.set_control_pin (PIN_NUMBER);  //If not used -1
+
+A call to this function we assign the pin number to be used to control the MAX485 driver, if it works as a universe of input or output. (Arduino pin that connects to pins 2 and 3 of the MAX485), can be any Arduino digital output pin
+- ArduinoDmxN.set_rx_address (DMX_RX_ADDRESS); //
+
+Calling this function assign the DMX INPUT start address for this universe, can be any value between 1 and 510 (2046)*
+- ArduinoDmxN.set_tx_address (DMX_TX_ADDRESS); //
+
+Calling this function assign the DMX OUT start address for this universe, can be any value between 1 and 510 (2046)*
+- 
+ArduinoDmxN.set_rx_channels (NUMBER_OF_CHANNELS);
+
+ //A call to this function we assign the number of channels of DMX INPUT for this universe, can be any value between 2 and 512 (2048)*
+- ArduinoDmxN.set_tx_channels (NUMBER_OF_CHANNELS); //A call to this function we assign the number of DMX OUT channels for this universe, can be any value between 2 and 512 (2048)*
+
+If you want to use sincronous mode:
+
+- 
+ArduinoDmxN.attachTXInterrupt (my_TX_ISR_name);
+
+ //A call to this function we assign the name of the callback function that is activated each time that finish sending a DMX frame in a DMX universe. (avoid loss of time in the main program loop)
+
+
+- ArduinoDmxN.attachRXInterrupt (my_RX_ISR_name);
+
+ //A call to this function we assign the name of the callback function that is activated each time that finish receiving a DMX frame in a DMX universe. (avoid loss of time in the main program loop)
+
+
+
+To begin transmitting or receiving a DMX universe (currently not possible simultaneously in the same universe), use one of the following functions:
+- ArduinoDmxN.init_rx (DMX_MODE);   // *** new parameter DMX_MODE ***
+
+A call to this function (once called the above functions) starts this universe to DMX RECEIVE.
+
+- 
+ArduinoDmxN.init_tx (DMX_MODE);   // *** new parameter DMX_MODE ***
+
+A call to this function (once called the above functions) starts this universe to DMX TRANSMIT.
+
+
+
+To write DMX output values:  
+- ArduinoDmxN.TxBuffer [CHANNEL - 1] = Data;
+
+
+To read DMX input values:
+- Data = ArduinoDmxN.RxBuffer [CHANNEL - 1]; // channel is 0 indexed
+
+* 
+
+This library does not use any Arduino timer, remaining free for other uses.
+
+ Thus we can use up to four universes simultaneously, each functioning as an input or output DMX. 
+
+In the examples of the library have as:
+
+- Receive one DMX universe.
+- Mix 2 DMX inputs (2 universes) in one, with patched channels. 200 + 200 input channels, output 400 channels.
+
+- Mix 2 DMX inputs (2 universes) in one, with higher value priority (HTP)
+
+- Use interrupts to send or receive in synchronous mode.
+
+- Use non-standard fast DMX modes.
+
+
+
+* 2048 channels with DMX1000K - 512 with DMX512
+
+
+
+
+Any suggestions or improvements are welcome.
+ 
+
+
+7-Jul-2012 - Toni Merino - www.deskontrol.net

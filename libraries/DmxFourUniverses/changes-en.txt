@@ -1,0 +1,64 @@
+Deskontrol 4 universes DMX library for Arduino.
+
+
+Version 0.3 
+
+CHANGES
+
+
+- Not needed anymore to disable and enable interrupts during configuration.
+
+
+- Not needed anymore to modify the Arduino IDE file HarwareSerial.cpp.
+
+
+- Experimental support for non-standard DMX modes, faster and with more channels per universe:
+
+	
+DMX512  (250 kbaud  - 2 to 512  channels) Standard USITT DMX-512
+	
+DMX1024 (500 kbaud  - 2 to 1024 channels) Completely non standard - TESTED ok
+	
+DMX2048 (1000 kbaud - 2 to 2048 channels) called by Manufacturers DMX1000K, 4x DMX or DMX 1M ???
+
+
+- Removed leds tx - rx for speedup, if required shall be implemented in the program
+
+
+- Interrupts on frame transmitted and frame received by each universe, user callback functions.
+
+
+
+
+Known issues:
+
+
+When we compile get the error: 'ArduinoDmxN' was not Declared In This scope:
+
+
+Check if you have configured the correct type of board in the Arduino IDE, menu tools > board
+(with Arduino nano can only use one USART = ArduinoDmx0 = USART0)
+
+
+
+
+Flicker when controlling LEDs:
+
+
+If we are dealing with LED lights, flicker may appear due to a refresh rate too low, we use fewer channels per universe (eg 200 instead of 512, to increase the frequency) and / or use less universes.
+
+
+
+
+Note about the refresh time:
+
+
+The Arduino Mega and Arduino Nano use a microcontroller Atmel AVR 8-bit at 16 Mhz, which imposes a limitation of resources. 
+For example, 4 buffers in DMX1000K mode at 2048 channels each, will consume ALL the memory on an Arduino Mega 2560, so it must be clear what we are doing.
+We should note that in practice we will probably not use all universes with all channels if we keep up the refresh rate of the DMX inputs and outputs. 
+
+Any suggestions or improvements are welcome.
+
+
+
+7-Jul-2012  - Toni Merino  - www.deskontrol.net
